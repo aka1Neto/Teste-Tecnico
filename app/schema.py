@@ -2,9 +2,13 @@ import pandas as pd
 import sqlite3
 
 # Open dataframe
-df = pd.read_csv("data/movies.csv")
+df = pd.read_csv("data/processed_movies.csv")
 df['release_date'] = pd.to_datetime(df['release_date'], errors='coerce').astype(str)
 df = df.where(pd.notnull(df), None)
+
+# Removing non-necessary columns
+columns_rm = ['vote_count', 'backdrop_path', 'homepage', 'poster_path']
+df.drop(columns=columns_rm, inplace=True)
 
 # Connect to database
 conn = sqlite3.connect("data/movies.db")
